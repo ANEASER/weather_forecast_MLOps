@@ -1,4 +1,5 @@
 import predictor
+import anomaly
 import pandas as pd
 import os
 
@@ -44,7 +45,13 @@ def classify(test:pd.DataFrame, train:pd.DataFrame):
 
 
 def main():
-   predictor.run()
+   try:
+      anomaly.main()
+      print('Anomaly detection completed!')
+      predictor.run()
+   except Exception as e:
+      print(f"An error occurred in anomaly.main(): {str(e)}")
+   
    df_test = pd.read_json('output.json')
    df_train = pd.read_csv('../Dataset/weather_data.csv')
    df_test.reset_index(inplace=True)
@@ -58,4 +65,4 @@ def main():
 
    os.remove('output.json')
 
-#main()
+main()
